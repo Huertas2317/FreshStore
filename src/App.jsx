@@ -1,58 +1,68 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import {
+  createBrowserRouter,
+  RouterProvider,
+  createRoutesFromElements,
+  Route,
+  Link,
+  useParams,
+  Outlet
+} from "react-router-dom";
 
-const products = [
-  {
-    id: 1,
-    name: "",
-    price: "12$",
-    image: "",
-    desc: ""
-  },
-  {
-    id: 2,
-    name: "",
-    price: "14$",
-    image: "",
-    desc: ""
-  },
-  {
-    id: 1,
-    name: "",
-    price: "16$",
-    image: "",
-    desc: ""
-  },
-]
+import About from './Pages/About'
+import ProductCard from './components/ProductCard'
+import ProductPage from './Pages/ProductPage';
+import Cart from './components/Cart';
+import ProductList from './components/ProductList';
+import RootLayout from './layouts/RootLayout';
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [count, setCount] = useState(0);
 
+  const products = [
+    {
+      id: 0,
+      name: "PEACH & YLANG",
+      price: "16$",
+      image: "http://lacasadelosaromas.com/wp-content/uploads/2021/03/049690-1.jpg",
+      desc: "100ml with an original and atractive design, strong floral scent"
+    },
+    {
+      id: 1,
+      name: "P.F & STRAWBERRY",
+      price: "12$",
+      image: "http://lacasadelosaromas.com/wp-content/uploads/2021/03/049713-1.jpg",
+      desc: "100ml with a strong scent of passion fruit mixed with strawberry"
+    },
+    {
+      id: 2,
+      name: "MELON & LILLY",
+      price: "14$",
+      image: "http://lacasadelosaromas.com/wp-content/uploads/2021/03/049706-1.jpg",
+      desc: "100ml with an intense and newly aroma"
+    },
+    {
+      id: 3,
+      name: "ORANGE & AMBER",
+      price: "13$",
+      image: "https://lacasadelosaromas.com/wp-content/uploads/2021/03/049683-1.jpg",
+      desc: "100ml intense aroma with woody fruits scent"
+    }
+  ];
+
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route path='/' element={<RootLayout count={count} />}>
+        <Route index element={<ProductList products={products} count={count} setCount={setCount}/>} />
+        <Route path='about' element={<About/>} />
+        <Route path='product/:id' element={<ProductPage products={products}  />} />
+      </Route>
+    )
+  );  
+ 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
+    <RouterProvider router={router}/>
   )
-}
+};
 
 export default App
